@@ -1,0 +1,129 @@
+1er video - entendiendo el problema -> https://youtu.be/Wv9y-sUR4MU
+2do video - Paso a paso explicacion -> https://youtu.be/jdFhxj0raM8
+
+EN EL 2do VIDEO al 1:44:00 cuando ME RECHAZAN EL SUBMIT EXPLOTO EN IRA DOS VECES Y GRITO, para que tengan cuidado x)
+
+=== === === === === === 
+							      
+#0 Primero asegurarnos que solo reciba UN INTEGER (get_int) y si no es asi, entonces devolvemos el "1" (error)
+
+a) Argc significa "cuantos argumentos recibe la funcion"
+En este caso queremos reciba SOLO 2 -> 
+
+a.1) ./caesar (esto para correr el programa)
+a.2) [Un Numero] (esto para saber cuanto valdra la "k")
+
+SI NO SE CUMPLEN ESTAS, ENTONCES IMPRIMIR -> "Usage: ./caesar key"
+
+b) Argv "significa" la posicion en el ARREGLO de cada "cosa".
+
+argv    [0]         [1]
+    [./caesar , {Un Numero} ]
+
+b.1) Sabemos que "Argv[1]" debe ser UN NUMERO UNICAMENTE.
+	Para esto debemos hacer un "for loop"
+		 
+			   length = 3
+		 0	      120
+for (int i = 0 ; i < strlen (argv[1]) ; i++) 
+
+
+
+							      
+#1 El usuario debe elegir cuantas posiciones se quiere mover en "k"
+							      
+Puede ser mayor que 25, CREO que por eso usamos el % 26
+
+///
+
+atoi -> convierte STRING a INTEGER
+stdlib.h -> debe usarse esta libreria
+
+///
+
+					      
+#2 Solicitar al usuario "plaintext:  " y usar "get_string"
+							      
+#3 Debemos devolver "get_string" pero encryptada, si NO es una palabra del alfabeto , osea "! , # etc" entonces NO se cambia.
+
+///
+
+Para "cada letra" analizar si es alfabetica "cifrar" la palabra, pero manteniendo Mayuscula/Minuscula
+
+Si NO es alfabetica, entonces dejar el caracter como es
+
+Ejemplo para "A":
+
+isalpha ('A') -> True (verifica si es alfabetica)
+isupper ('A') -> True (verifica si A es Mayuscula)
+islower ('A') -> False (verifica si A es Minuscula)
+
+char c = 'A';   ;
+printf ("%c", c); -> prints A
+
+char c = 'A'+1   ;
+printf ("%c", c); -> prints B
+
+///
+
+							       
+#4 Las minusculas se mantienen minusculas y las mayusculas se mantienen mayusculas
+							       
+#5 Al terminar el paso "#3" debemos "empezar en una nueva linea" y retornar un 0 desde main
+							       
+///
+
+CODIGO DEL PROBLEMA ->
+
+#include <cs50.h>
+#include <stdio.h>
+#include <string.h> // Checks string length
+#include <ctype.h> // Allows to use "isdigit" which checks if something is an int
+#include <stdlib.h> // Allows "atoi" which converts string to int
+
+int main(int argc, string argv[])
+{
+    // Here we check the case we have ONLY 2 argc
+    if (argc != 2)
+    {
+        printf("Usage: ./caesar key\n");
+        return 1; // This is to QUIT the program
+    }
+
+    // Here we check the case argv[1] we ONLY GOT DIGITS
+    for (int i = 0 ; i < strlen(argv[1]) ; i++)
+    {
+        if(!isdigit(argv[1][i]))
+        {
+            printf("Usage: ./caesar key\n");
+            return 1; // This is to QUIT the program
+        }
+    }
+
+        int k = atoi(argv[1]);
+
+        string plaintext = get_string("plaintext: ");
+        printf("ciphertext: ");
+
+        for (int j = 0 ; j < strlen(plaintext) ; j++ )
+        {
+            // Here we check for uppercase scenario
+            if(isupper(plaintext[j]))
+            {
+                printf("%c", (plaintext[j] + k - 65) % 26 + 65);
+            }
+            // Here we check for lowercase scenario
+            else if(islower(plaintext[j]))
+            {
+                printf("%c", (plaintext[j] + k - 97) % 26 + 97);
+            }
+            // Here we check for ANY OTHER CASE
+            else
+            {
+                printf("%c", plaintext[j]);
+            }
+        }
+        printf("\n");
+}
+
+
